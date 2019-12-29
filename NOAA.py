@@ -1,18 +1,17 @@
 #!/usr/local/bin/python3
 
 import requests
+import logging
 
 class NOAA:
     NOAA_BASE_URL="https://api.weather.gov"
-    DEBUG=True
 
     def __init__(self, latLon=None):
         self._latLon = latLon
         self._stationID = None
 
     def debugLog(self, msg):
-        if self.DEBUG:
-            print(msg)
+        logging.debug(msg)
 
     def doRequest(self, url):
         self.debugLog("📜  Sending request to %s" % url)
