@@ -70,7 +70,8 @@ class Si7021:
         data = self.bus.read_i2c_block_data(self.address, _Si7021_READ_HUMID_HOLD, 3)
         humid = (data[0] << 8) | data[1]
         if data[2] != self._crc(data[:2]):
-            raise ValueError("CRC mismatch")
+            #raise ValueError("CRC mismatch")
+            print("CRC Mismatch")
         return min(100.0, ((humid * 125) >> 16) - 6.0)
 
     @property
@@ -78,5 +79,6 @@ class Si7021:
         data = self.bus.read_i2c_block_data(self.address, _Si7021_READ_TEMP_HOLD, 3)
         temp = (data[0] << 8) | data[1]
         if data[2] != self._crc(data[:2]):
-            raise ValueError("CRC mismatch")
+            #raise ValueError("CRC mismatch")
+            print("CRC Mismatch")
         return min(100.0, ((temp * 175.72) / 65536) - 46.85)

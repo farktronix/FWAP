@@ -7,6 +7,7 @@
 
 from smbus2 import SMBus
 from NOAA import NOAA
+from threading import Timer
 import logging
 import time
 
@@ -101,12 +102,10 @@ class MPL3115A2:
         self._ctrlReg1 = (_MPL3115A2_CTRL_REG1_ALT | _MPL3115A2_CTRL_REG1_OS128)
         self._writeReg1()
 
-        logging.debug("🌦  Fetching weather data from NOAA...")
-        pressure = 0
-        self.noaa = NOAA()
         if fetchPressure is True:
+            seaLevelPressure = 0
+            self.noaa = NOAA()
             self._updatePressure()
-            # TODO: Set a timer for a recurring pressure update
 
         self.bus.write_byte_data(self.address, _MPL3115A2_PT_DATA_CFG, (_MPL3115A2_PT_DATA_CFG_TDEFE | _MPL3115A2_PT_DATA_CFG_PDEFE | _MPL3115A2_PT_DATA_CFG_DREM))
 
@@ -141,6 +140,7 @@ class MPL3115A2:
 
     def _updatePressure(self):
         try:
+            logging.debug("🌦  Fetching pressure data from NOAA...")
             pressure = self.noaa.getCurrentSeaLevelPressure() 
             logging.debug("⛈🌡 Pressure fetched from NOAA is %dPa" % pressure)
             self.seaLevelPressure = pressure
@@ -189,7 +189,7 @@ class MPL3115A2:
         pressure //= 2
         pressureLSB = pressure & 0xFF
         pressureMSB = (pressure >> 8) & 0xFF
-        logging.debug("🌡 Writing pressure data of %dPa (%0x|%0x)" % (pressure, pressureMSB, pressureLSB))
+        logging.debug("🌡 Writing pressure data of %dPa (%d, %0x|%0x)" % (pressure >> 1, pressure, pressureMSB, pressureLSB))
         self.bus.write_i2c_block_data(self.address, _MPL3115A2_BAR_IN_MSB, [pressureMSB, pressureLSB])
 
     # ----
