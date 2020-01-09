@@ -35,8 +35,11 @@ def readSi():
     (humidity, temp) = si.read()
     print("🌡 Temp is %.3f°C (%.3f°F)" % (temp, (temp * 1.8 + 32.0)))
     print("🌫 Relative humidity is %0.2f%%" % humidity)
-    return [f"weather,host={hostname},sensor=Si7021 humidity={humidity}",
-            f"weather,host={hostname},sensor=Si7021 temperature={temp}"]
+    data = [f"weather,host={hostname},sensor=Si7021 temperature={temp}"]
+    # Filter out undiagnosed spikes of 100% humidity
+    if humidity < 100:
+        data += [f"weather,host={hostname},sensor=Si7021 humidity={humidity}"]
+    return data
 
 def readPMS():
     pmsdata = pms5003.read()
