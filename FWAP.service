@@ -1,0 +1,14 @@
+[Unit]
+Description=Farkas Automated Weather Processing
+Documentation=https://rkas.net/FWAP
+After=network-online.target
+
+[Service]
+User=root
+Group=sudo
+ExecStart=/usr/bin/python3 /home/fwap/FWAP/FWAP.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=fwap.service
