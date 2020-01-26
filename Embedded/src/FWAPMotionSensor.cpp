@@ -36,7 +36,6 @@ void loopMotionSensor() {
             debug("Motion posted to server with response " + String(httpCode));
 
             InfluxData motion("sensors");
-            motion.addTag("host", HOSTNAME);
             motion.addTag("sensor", "HC-SR501");
             motion.addValue("motion", 1);
             _db->write(motion);

@@ -30,7 +30,7 @@ void setupTempSensor(FWAPDB *db) {
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 }
 
-#define UPDATE_INTERVAL 5 * 1000
+#define UPDATE_INTERVAL 60 * 1000
 static unsigned long lastMillis = 0;
 void loopTempSensor() {
     if (!tempSensorConfigured) return;
@@ -39,7 +39,6 @@ void loopTempSensor() {
 
     if (millis() - lastMillis > UPDATE_INTERVAL) {
         InfluxData temperature("weather");
-        temperature.addTag("host", HOSTNAME);
         temperature.addTag("sensor", "BMP280");
         temperature.addValue("temperature", bmp.readTemperature());
         _db->prepare(temperature);
@@ -52,7 +51,6 @@ void loopTempSensor() {
         debug(" hPa");
 
         InfluxData pressure("weather");
-        pressure.addTag("host", HOSTNAME);
         pressure.addTag("sensor", "BMP280");
         pressure.addValue("pressure", bmp.readPressure());
         _db->prepare(pressure);

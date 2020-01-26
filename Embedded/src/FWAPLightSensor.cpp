@@ -53,7 +53,6 @@ void loopLightMeter() {
         debug("Reporting lux value to db: " + String(lux, 4));
 
         InfluxData light("sensors");
-        light.addTag("host", HOSTNAME);
         light.addTag("sensor", "BH1750");
         light.addValue("lux", summedSamples / (float)numSamples);
         _db->write(light);
