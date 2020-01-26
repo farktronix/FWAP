@@ -15,6 +15,7 @@
 #include "FWAPLightSensor.h"
 #include "FWAPTempSensor.h"
 #include "FWAPMotionSensor.h"
+#include "FWAPSwitch.h"
 
 static FWAPDB *_fwapDB;
 static FWAPDB *_systemDB;
@@ -60,7 +61,8 @@ void setup() {
   setupFWAPPMS(_fwapDB);
   setupLightMeter(_fwapDB);
   setupTempSensor(_fwapDB);
-  //setupMotionSensor(_fwapDB);
+  setupMotionSensor(_fwapDB);
+  //setupReedSwitch(_fwapDB);
 }
 
 #define DB_INTERVAL 60 * 1000
@@ -82,7 +84,8 @@ void loop() {
   loopPMS();
   loopLightMeter();
   loopTempSensor();
-  //loopMotionSensor();
+  loopMotionSensor();
+  //loopReedSwitch();
 
   yield();
 }

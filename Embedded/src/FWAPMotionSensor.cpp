@@ -21,10 +21,10 @@ void setupMotionSensor(FWAPDB *db) {
 }
 
 void loopMotionSensor() {
-    int buttonState = digitalRead(HCSR501_PIN);
+    int motionState = digitalRead(HCSR501_PIN);
 
     unsigned long now = millis();
-    if (buttonState == 1) {
+    if (motionState == 1) {
         if ((now - lastMotionDetected) > MOTION_DELAY) {
             lastMotionDetected = now;
 
