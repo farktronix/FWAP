@@ -25,7 +25,7 @@ void setupLightMeter(FWAPDB *db) {
 static unsigned long lastUpdateMillis = 0;
 
 
-#define DB_INTERVAL 60 * 1000
+#define DB_INTERVAL REPORT_INVERVAL
 static unsigned long lastDBMillis = 0;
 static float summedSamples = 0;
 static unsigned long numSamples = 0;

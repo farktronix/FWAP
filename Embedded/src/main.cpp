@@ -32,6 +32,7 @@ void setup() {
   debug("MAC: ");
   debug(WiFi.macAddress());
 
+#if INIT_WIFI
   Serial.print("Waiting for WiFi to connect...");
   while ( WiFi.status() != WL_CONNECTED ) {
     delay ( 10 );
@@ -48,6 +49,7 @@ void setup() {
       delay(1000);
     }
   }
+#endif
 
 #ifdef OTA_UPDATES
   ArduinoOTA.setHostname(HOSTNAME);
@@ -58,11 +60,25 @@ void setup() {
   _fwapDB = new FWAPDB(INFLUXDB_HOST, "FWAP");
   _systemDB = new FWAPDB(INFLUXDB_HOST, "Systems");
 
+#if PMS_ENABLE
   setupFWAPPMS(_fwapDB);
+#endif
+
+#if LIGHT_SENSOR_ENABLE
   setupLightMeter(_fwapDB);
+#endif
+
+#if TEMP_SENSOR_ENABLE
   setupTempSensor(_fwapDB);
+#endif
+
+#if MOTION_SENSOR_ENABLE
   setupMotionSensor(_fwapDB);
-  //setupReedSwitch(_fwapDB);
+#endif
+
+#if REED_SWITCH_ENABLE
+  setupReedSwitch(_fwapDB);
+#endif
 }
 
 #define DB_INTERVAL 60 * 1000
@@ -81,11 +97,25 @@ void loop() {
     _systemDB->write(uptime);
   }
 
+#if PMS_ENABLE
   loopPMS();
+#endif
+
+#if LIGHT_SENSOR_ENABLE
   loopLightMeter();
+#endif
+
+#if TEMP_SENSOR_ENABLE
   loopTempSensor();
+#endif
+
+#if MOTION_SENSOR_ENABLE
   loopMotionSensor();
-  //loopReedSwitch();
+#endif
+
+#if REED_SWITCH_ENABLE
+  loopReedSwitch();
+#endif
 
   yield();
 }

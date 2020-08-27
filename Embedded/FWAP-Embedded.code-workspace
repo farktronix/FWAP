@@ -12,7 +12,8 @@
 			"string": "cpp",
 			"unordered_map": "cpp",
 			"vector": "cpp",
-			"initializer_list": "cpp"
+			"initializer_list": "cpp",
+			"random": "cpp"
 		}
 	}
 }
